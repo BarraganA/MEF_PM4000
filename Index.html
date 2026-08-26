@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Generador de ángulos</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        .contenedor {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        button {
+            padding: 12px 22px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 1px solid #999;
+        }
+
+        #angulo {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 20px;
+        }
+
+        svg {
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+        }
+
+        line {
+            stroke: #333;
+            stroke-width: 4;
+        }
+
+        circle {
+            fill: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h2>Generador de ángulos</h2>
+
+    <p>
+        Genera un ángulo y determina su clasificación.
+    </p>
+
+    <button id="generar">
+        Generar ángulo
+    </button>
+
+    <div id="angulo">
+        θ = 45°
+    </div>
+
+    <svg viewBox="0 0 500 350">
+
+        <line
+            x1="250"
+            y1="250"
+            x2="450"
+            y2="250">
+        </line>
+
+        <line
+            id="ladoMovil"
+            x1="250"
+            y1="250"
+            x2="391"
+            y2="109">
+        </line>
+
+        <circle
+            cx="250"
+            cy="250"
+            r="6">
+        </circle>
+
+    </svg>
+
+</div>
+
+<script>
+
+const boton = document.getElementById("generar");
+const textoAngulo = document.getElementById("angulo");
+const ladoMovil = document.getElementById("ladoMovil");
+
+function generarAngulo() {
+
+    const angulo = Math.floor(Math.random() * 360);
+
+    textoAngulo.textContent = `θ = ${angulo}°`;
+
+    const radianes = angulo * Math.PI / 180;
+
+    const longitud = 200;
+
+    const x = 250 + longitud * Math.cos(radianes);
+    const y = 250 - longitud * Math.sin(radianes);
+
+    ladoMovil.setAttribute("x2", x);
+    ladoMovil.setAttribute("y2", y);
+}
+
+boton.addEventListener("click", generarAngulo);
+
+</script>
+
+</body>
+</html>
