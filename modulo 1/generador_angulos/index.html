@@ -1,127 +1,140 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Generador de ángulos</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 30px;
-            background: #ffffff;
-        }
-
-        .contenedor {
-            max-width: 700px;
-            margin: auto;
-        }
-
-        button {
-            padding: 12px 22px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            border: 1px solid #999;
-        }
-
-        #angulo {
-            font-size: 32px;
-            font-weight: bold;
-            margin: 20px;
-        }
-
-        svg {
-            width: 100%;
-            max-width: 500px;
-            height: 350px;
-        }
-
-        line {
-            stroke: #333;
-            stroke-width: 4;
-        }
-
-        circle {
-            fill: #333;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clasificación de ángulos | PM4000</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
+  <main class="app-shell" aria-labelledby="app-title">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">PM4000 · MEF interactivo</p>
+        <h1 id="app-title" data-i18n="appTitle">Clasificación y relaciones de ángulos</h1>
+      </div>
 
-<div class="contenedor">
+      <label class="language-control" for="language-select">
+        <span data-i18n="languageLabel">Idioma</span>
+        <select id="language-select" aria-label="Idioma">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+    </header>
 
-    <h2>Generador de ángulos</h2>
+    <nav class="mode-switch" aria-label="Modo de práctica">
+      <button id="mode-classification" class="mode-button is-active" type="button" aria-pressed="true" data-i18n="classificationMode">
+        Clasificación
+      </button>
+      <button id="mode-relations" class="mode-button" type="button" aria-pressed="false" data-i18n="relationsMode">
+        Relaciones
+      </button>
+    </nav>
 
-    <p>
-        Genera un ángulo y determina su clasificación.
-    </p>
+    <section id="classification-panel" class="practice-panel" aria-labelledby="classification-heading">
+      <div class="section-heading">
+        <div>
+          <h2 id="classification-heading" data-i18n="classificationTitle">Clasifica el ángulo</h2>
+          <p data-i18n="classificationInstruction">Observa el ángulo, selecciona su clasificación y comprueba tu respuesta.</p>
+        </div>
+        <button id="new-classification" class="button button-secondary" type="button" data-i18n="newExercise">Nuevo ejercicio</button>
+      </div>
 
-    <button id="generar">
-        Generar ángulo
-    </button>
+      <div class="workspace-grid">
+        <div class="visual-card">
+          <div id="angle-measure" class="angle-measure" aria-live="polite">θ = 45°</div>
+          <svg id="angle-svg" class="angle-svg" viewBox="0 0 420 330" role="img" aria-labelledby="angle-svg-title angle-svg-desc">
+            <title id="angle-svg-title">Ángulo generado</title>
+            <desc id="angle-svg-desc">Representación gráfica del ángulo generado.</desc>
+            <defs>
+              <marker id="arrowhead" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,7 L8,3.5 z" class="svg-arrow"></path>
+              </marker>
+            </defs>
+            <line id="base-ray" x1="130" y1="235" x2="350" y2="235" class="svg-ray" marker-end="url(#arrowhead)"></line>
+            <line id="moving-ray" x1="130" y1="235" x2="285" y2="80" class="svg-ray svg-ray-moving" marker-end="url(#arrowhead)"></line>
+            <path id="angle-arc" d="" class="svg-arc"></path>
+            <circle id="full-angle-circle" cx="130" cy="235" r="70" class="svg-arc full-circle" hidden></circle>
+            <circle cx="130" cy="235" r="6" class="svg-vertex"></circle>
+            <text x="118" y="260" class="svg-label">V</text>
+          </svg>
+        </div>
 
-    <div id="angulo">
-        θ = 45°
-    </div>
+        <div class="question-card">
+          <p class="question-label" data-i18n="chooseClassification">Selecciona una clasificación:</p>
+          <div id="classification-options" class="option-grid" role="radiogroup" aria-label="Clasificación del ángulo"></div>
 
-    <svg viewBox="0 0 500 350">
+          <div class="action-row">
+            <button id="check-classification" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
+          </div>
 
-        <line
-            x1="250"
-            y1="250"
-            x2="450"
-            y2="250">
-        </line>
+          <div id="classification-feedback" class="feedback" aria-live="polite" hidden></div>
+        </div>
+      </div>
+    </section>
 
-        <line
-            id="ladoMovil"
-            x1="250"
-            y1="250"
-            x2="391"
-            y2="109">
-        </line>
+    <section id="relations-panel" class="practice-panel" aria-labelledby="relations-heading" hidden>
+      <div class="section-heading">
+        <div>
+          <h2 id="relations-heading" data-i18n="relationsTitle">Relaciones entre ángulos</h2>
+          <p data-i18n="relationsInstruction">Encuentra el ángulo que completa la relación indicada.</p>
+        </div>
+        <button id="new-relation" class="button button-secondary" type="button" data-i18n="newExercise">Nuevo ejercicio</button>
+      </div>
 
-        <circle
-            cx="250"
-            cy="250"
-            r="6">
-        </circle>
+      <div class="relation-toolbar">
+        <label for="relation-type" data-i18n="relationTypeLabel">Tipo de relación</label>
+        <select id="relation-type">
+          <option value="complementary" data-i18n="complementary">Complementarios</option>
+          <option value="supplementary" data-i18n="supplementary">Suplementarios</option>
+          <option value="conjugate" data-i18n="conjugate">Conjugados</option>
+        </select>
+      </div>
 
-    </svg>
+      <div class="workspace-grid">
+        <div class="visual-card">
+          <div id="relation-angle-measure" class="angle-measure" aria-live="polite">α = 35°</div>
+          <svg id="relation-svg" class="angle-svg" viewBox="0 0 420 330" role="img" aria-labelledby="relation-svg-title relation-svg-desc">
+            <title id="relation-svg-title">Ángulo de referencia</title>
+            <desc id="relation-svg-desc">Representación gráfica del ángulo dado para completar la relación.</desc>
+            <defs>
+              <marker id="arrowhead-relation" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,7 L8,3.5 z" class="svg-arrow"></path>
+              </marker>
+            </defs>
+            <line x1="130" y1="235" x2="350" y2="235" class="svg-ray" marker-end="url(#arrowhead-relation)"></line>
+            <line id="relation-moving-ray" x1="130" y1="235" x2="285" y2="80" class="svg-ray svg-ray-moving" marker-end="url(#arrowhead-relation)"></line>
+            <path id="relation-angle-arc" d="" class="svg-arc"></path>
+            <circle cx="130" cy="235" r="6" class="svg-vertex"></circle>
+            <text x="118" y="260" class="svg-label">V</text>
+          </svg>
+        </div>
 
-</div>
+        <div class="question-card">
+          <p id="relation-prompt" class="relation-prompt">¿Cuál es el complemento de 35°?</p>
 
-<script>
+          <label class="answer-label" for="relation-answer" data-i18n="yourAnswer">Tu respuesta</label>
+          <div class="numeric-answer">
+            <input id="relation-answer" type="number" inputmode="numeric" min="0" max="360" step="1" autocomplete="off">
+            <span>°</span>
+          </div>
 
-const boton = document.getElementById("generar");
-const textoAngulo = document.getElementById("angulo");
-const ladoMovil = document.getElementById("ladoMovil");
+          <div class="action-row">
+            <button id="check-relation" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
+          </div>
 
-function generarAngulo() {
+          <div id="relation-feedback" class="feedback" aria-live="polite" hidden></div>
+        </div>
+      </div>
+    </section>
 
-    const angulo = Math.floor(Math.random() * 360);
+    <footer class="app-footer">
+      <span>MEF · PM4000</span>
+      <span data-i18n="footerText">Recurso interactivo de práctica</span>
+    </footer>
+  </main>
 
-    textoAngulo.textContent = `θ = ${angulo}°`;
-
-    const radianes = angulo * Math.PI / 180;
-
-    const longitud = 200;
-
-    const x = 250 + longitud * Math.cos(radianes);
-    const y = 250 - longitud * Math.sin(radianes);
-
-    ladoMovil.setAttribute("x2", x);
-    ladoMovil.setAttribute("y2", y);
-}
-
-boton.addEventListener("click", generarAngulo);
-
-</script>
-
+  <script src="app.js"></script>
 </body>
 </html>
