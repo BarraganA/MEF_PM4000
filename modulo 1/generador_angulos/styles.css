@@ -191,7 +191,7 @@ select {
   width: 100%;
   max-width: 440px;
   height: auto;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .svg-ray {
@@ -217,7 +217,7 @@ select {
 
 .full-circle {
   transform: rotate(-90deg);
-  transform-origin: 130px 235px;
+  transform-origin: 210px 165px;
   stroke-dasharray: 14 7;
 }
 
