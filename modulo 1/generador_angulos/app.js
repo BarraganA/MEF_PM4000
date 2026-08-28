@@ -327,10 +327,10 @@ function animateSvgAngle(targetAngle, movingRay, arcPath, fullCircle) {
 }
 
 function drawSvgAngle(angle, movingRay, arcPath, fullCircle, forceFullCircle = false) {
-  const cx = 130;
-  const cy = 235;
-  const rayLength = 205;
-  const arcRadius = 72;
+  const cx = 210;
+  const cy = 165;
+  const rayLength = 125;
+  const arcRadius = 58;
   const normalized = Math.max(0, Math.min(angle, 360));
   const radians = normalized * Math.PI / 180;
 
