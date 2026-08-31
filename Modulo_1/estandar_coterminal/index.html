@@ -7,172 +7,258 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<main class="app-shell">
-  <header class="app-header">
-    <div>
-      <h1 data-i18n="appTitle">Posición estándar y ángulos coterminales</h1>
-      <p data-i18n="appSubtitle">Explora rotaciones, posición estándar y familias de ángulos coterminales.</p>
-    </div>
-    <label class="language-control">Idioma
-      <select id="language-select">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-      </select>
-    </label>
-  </header>
-
-  <nav class="mode-switch">
-    <button id="mode-explore" class="mode-button is-active" type="button" data-i18n="modeExplore">Explorar</button>
-    <button id="mode-position" class="mode-button" type="button" data-i18n="modePosition">Posición estándar</button>
-    <button id="mode-coterminal" class="mode-button" type="button" data-i18n="modeCoterminal">Coterminales</button>
-    <button id="mode-reduce" class="mode-button" type="button" data-i18n="modeReduce">Reducir a una vuelta</button>
-  </nav>
-
-  <section>
-    <div class="section-heading">
+  <main class="app-shell" aria-labelledby="app-title">
+    <header class="app-header">
       <div>
-        <h2 id="practice-heading">Explora la rotación</h2>
-        <p id="practice-instruction">Genera un ángulo y observa cómo cambia su lado terminal.</p>
+        <h1 id="app-title" data-i18n="appTitle">Posición estándar y ángulos coterminales</h1>
+        <p class="app-subtitle" data-i18n="appSubtitle">
+          Explora rotaciones, construye ángulos en posición estándar y trabaja con coterminales.
+        </p>
       </div>
-      <button id="new-exercise" class="button button-secondary" type="button" data-i18n="newExercise">Nuevo ejercicio</button>
-    </div>
 
-    <div class="toolbar">
-      <label><span data-i18n="unitLabel">Unidad</span>
-        <select id="unit-select">
-          <option value="deg" data-i18n="degrees">Grados</option>
-          <option value="rad" data-i18n="radians">Radianes</option>
+      <label class="language-control" for="language-select">
+        <span data-i18n="languageLabel">Idioma</span>
+        <select id="language-select">
+          <option value="es">Español</option>
+          <option value="en">English</option>
         </select>
       </label>
-      <label><span data-i18n="difficultyLabel">Tipo de ejercicio</span>
-        <select id="difficulty-select">
-          <option value="mixed" data-i18n="mixed">Mixto</option>
-          <option value="standard" data-i18n="standardAngles">Ángulos comunes</option>
-          <option value="quadrantal" data-i18n="quadrantalAngles">Cuadrantales</option>
-          <option value="negative" data-i18n="negativeAngles">Negativos</option>
-          <option value="multi" data-i18n="multiTurnAngles">Más de una vuelta</option>
-        </select>
-      </label>
-    </div>
+    </header>
 
-    <div class="workspace-grid">
-      <div class="visual-card">
-        <div id="given-measure" class="given-measure">210°</div>
+    <nav class="mode-switch" aria-label="Modo de práctica">
+      <button id="mode-explore" class="mode-button is-active" type="button" aria-pressed="true" data-i18n="modeExplore">Explorar</button>
+      <button id="mode-build" class="mode-button" type="button" aria-pressed="false" data-i18n="modeBuild">Construye el ángulo</button>
+      <button id="mode-coterminal" class="mode-button" type="button" aria-pressed="false" data-i18n="modeCoterminal">Coterminales</button>
+      <button id="mode-reduce" class="mode-button" type="button" aria-pressed="false" data-i18n="modeReduce">Reducir a una vuelta</button>
+    </nav>
 
-        <svg class="angle-svg" viewBox="0 0 460 390" role="img">
-          <defs>
-            <marker id="axis-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto">
-              <path d="M0,0 L0,7 L7,3.5 z" class="axis-arrow-shape"></path>
-            </marker>
-            <marker id="ray-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto">
-              <path d="M0,0 L0,7 L7,3.5 z" class="ray-arrow-shape"></path>
-            </marker>
-            <marker id="arc-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
-              <path d="M0,0 L0,7 L8,3.5 z" class="arc-arrow-shape"></path>
-            </marker>
-          </defs>
+    <section class="practice-panel">
+      <div class="section-heading">
+        <div>
+          <h2 id="practice-heading">Explora la rotación</h2>
+          <p id="practice-instruction">Genera un ángulo y observa su posición estándar.</p>
+        </div>
 
-          <circle cx="230" cy="195" r="128" class="guide-circle"></circle>
-          <line x1="55" y1="195" x2="405" y2="195" class="axis-line" marker-end="url(#axis-arrow)"></line>
-          <line x1="230" y1="355" x2="230" y2="35" class="axis-line" marker-end="url(#axis-arrow)"></line>
-          <text x="410" y="187" class="axis-label">x</text>
-          <text x="239" y="42" class="axis-label">y</text>
-          <text x="330" y="88" class="quadrant-label">I</text>
-          <text x="118" y="88" class="quadrant-label">II</text>
-          <text x="112" y="310" class="quadrant-label">III</text>
-          <text x="330" y="310" class="quadrant-label">IV</text>
+        <button id="new-exercise" class="button button-secondary" type="button" data-i18n="newExercise">
+          Nuevo ejercicio
+        </button>
+      </div>
 
-          <line x1="230" y1="195" x2="358" y2="195" class="initial-ray"></line>
-          <line id="terminal-ray" x1="230" y1="195" x2="140" y2="285" class="terminal-ray" marker-end="url(#ray-arrow)"></line>
-          <path id="rotation-path" d="" class="rotation-path" marker-end="url(#arc-arrow)"></path>
-          <circle id="full-turn-circle" cx="230" cy="195" r="85" class="rotation-path full-turn-circle" hidden></circle>
-          <circle cx="230" cy="195" r="6" class="vertex"></circle>
-        </svg>
+      <div class="toolbar">
+        <label for="unit-select">
+          <span data-i18n="unitLabel">Unidad</span>
+          <select id="unit-select">
+            <option value="deg" data-i18n="degrees">Grados</option>
+            <option value="rad" data-i18n="radians">Radianes</option>
+          </select>
+        </label>
 
-        <div class="turns-summary">
-          <div><span data-i18n="fullTurns">Vueltas completas</span><strong id="turn-count">0</strong></div>
-          <div><span data-i18n="residualAngle">Ángulo restante</span><strong id="residual-angle">210°</strong></div>
+        <label for="difficulty-select">
+          <span data-i18n="difficultyLabel">Tipo de ejercicio</span>
+          <select id="difficulty-select">
+            <option value="mixed" data-i18n="mixed">Mixto</option>
+            <option value="standard" data-i18n="standardAngles">Una vuelta</option>
+            <option value="quadrantal" data-i18n="quadrantalAngles">Cuadrantales</option>
+            <option value="negative" data-i18n="negativeAngles">Negativos</option>
+            <option value="multi" data-i18n="multiTurnAngles">Más de una vuelta</option>
+          </select>
+        </label>
+
+        <div class="step-note">
+          <span data-i18n="stepNote">Todos los ángulos se generan y ajustan de 5° en 5°.</span>
         </div>
       </div>
 
-      <div class="question-card">
-        <section id="explore-panel">
-          <h3 data-i18n="exploreTitle">Información del ángulo</h3>
-          <dl class="data-list">
-            <div><dt data-i18n="direction">Sentido</dt><dd id="explore-direction"></dd></div>
-            <div><dt data-i18n="terminalLocation">Lado terminal</dt><dd id="explore-location"></dd></div>
-            <div><dt data-i18n="equivalentOneTurn">Equivalente en una vuelta</dt><dd id="explore-reduced"></dd></div>
-            <div><dt data-i18n="referenceAngle">Ángulo de referencia</dt><dd id="explore-reference"></dd></div>
-          </dl>
-          <div class="formula-card">
-            <strong data-i18n="coterminalRule">Regla de coterminalidad</strong>
-            <p id="coterminal-rule"></p>
-          </div>
-        </section>
+      <div class="workspace-grid">
+        <div class="visual-card">
+          <div id="given-measure" class="given-measure" aria-live="polite">210°</div>
 
-        <section id="position-panel" hidden>
-          <h3 data-i18n="positionTitle">Identifica el lado terminal</h3>
-          <p data-i18n="positionPrompt">¿Dónde termina el lado terminal del ángulo?</p>
-          <div id="location-options" class="option-grid"></div>
-          <button id="check-position" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
-          <div id="position-feedback" class="feedback" hidden></div>
-        </section>
+          <svg id="angle-svg" class="angle-svg" viewBox="0 0 460 390" role="img" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Ángulo en posición estándar</title>
+            <desc id="svg-desc">Plano cartesiano con circunferencia, lado inicial y lado terminal.</desc>
 
-        <section id="coterminal-panel" hidden>
-          <h3 data-i18n="coterminalTitle">Genera ángulos coterminales</h3>
-          <p data-i18n="coterminalInstruction">Escribe un ángulo coterminal positivo y uno negativo.</p>
+            <defs>
+              <marker id="axis-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L7,3.5 z" class="axis-arrow-shape"></path>
+              </marker>
 
-          <div id="coterminal-deg-inputs">
-            <label class="answer-label" data-i18n="positiveCoterminal">Coterminal positivo</label>
-            <div class="numeric-answer"><input id="positive-coterminal-deg" type="number"><span>°</span></div>
-            <label class="answer-label" data-i18n="negativeCoterminal">Coterminal negativo</label>
-            <div class="numeric-answer"><input id="negative-coterminal-deg" type="number"><span>°</span></div>
-          </div>
+              <marker id="ray-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L7,3.5 z" class="ray-arrow-shape"></path>
+              </marker>
 
-          <div id="coterminal-rad-inputs" hidden>
-            <p class="answer-label" data-i18n="positiveCoterminal">Coterminal positivo</p>
-            <div class="pi-fraction-input">
-              <input id="positive-rad-num" type="number"><span class="pi-symbol">π</span>
-              <span class="fraction-divider"></span><input id="positive-rad-den" type="number">
+              <marker id="arc-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L8,3.5 z" class="arc-arrow-shape"></path>
+              </marker>
+            </defs>
+
+            <circle cx="230" cy="195" r="128" class="guide-circle"></circle>
+
+            <line x1="55" y1="195" x2="405" y2="195" class="axis-line" marker-end="url(#axis-arrow)"></line>
+            <line x1="230" y1="355" x2="230" y2="35" class="axis-line" marker-end="url(#axis-arrow)"></line>
+
+            <text x="410" y="187" class="axis-label">x</text>
+            <text x="239" y="42" class="axis-label">y</text>
+
+            <text x="330" y="88" class="quadrant-label">I</text>
+            <text x="118" y="88" class="quadrant-label">II</text>
+            <text x="112" y="310" class="quadrant-label">III</text>
+            <text x="330" y="310" class="quadrant-label">IV</text>
+
+            <line id="initial-ray" x1="230" y1="195" x2="358" y2="195" class="initial-ray"></line>
+            <line id="terminal-ray" x1="230" y1="195" x2="140" y2="285" class="terminal-ray" marker-end="url(#ray-arrow)"></line>
+
+            <path id="rotation-path" d="" class="rotation-path" marker-end="url(#arc-arrow)"></path>
+            <circle id="full-turn-circle" cx="230" cy="195" r="85" class="rotation-path full-turn-circle" hidden></circle>
+
+            <circle cx="230" cy="195" r="6" class="vertex"></circle>
+
+            <circle id="drag-handle" cx="358" cy="195" r="13" class="drag-handle" hidden tabindex="0" role="slider"
+              aria-valuemin="0" aria-valuemax="355" aria-valuenow="0" aria-label="Posición del lado terminal"></circle>
+          </svg>
+
+          <div id="build-controls" class="build-controls" hidden>
+            <button id="minus-five" class="mini-button" type="button">−5°</button>
+            <div class="placed-angle">
+              <span data-i18n="yourPosition">Tu posición</span>
+              <strong id="placed-measure">0°</strong>
             </div>
-            <p class="answer-label" data-i18n="negativeCoterminal">Coterminal negativo</p>
-            <div class="pi-fraction-input">
-              <input id="negative-rad-num" type="number"><span class="pi-symbol">π</span>
-              <span class="fraction-divider"></span><input id="negative-rad-den" type="number">
+            <button id="plus-five" class="mini-button" type="button">+5°</button>
+          </div>
+
+          <div id="turns-summary" class="turns-summary">
+            <div>
+              <span data-i18n="fullTurns">Vueltas completas</span>
+              <strong id="turn-count">0</strong>
+            </div>
+            <div>
+              <span data-i18n="residualAngle">Ángulo restante</span>
+              <strong id="residual-angle">210°</strong>
             </div>
           </div>
+        </div>
 
-          <button id="check-coterminal" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
-          <div id="coterminal-feedback" class="feedback" hidden></div>
-        </section>
+        <div class="question-card">
+          <section id="explore-panel">
+            <h3 data-i18n="exploreTitle">Información del ángulo</h3>
 
-        <section id="reduce-panel" hidden>
-          <h3 data-i18n="reduceTitle">Reduce a una vuelta</h3>
-          <p data-i18n="reduceInstruction">Encuentra el ángulo coterminal en el intervalo de una vuelta.</p>
+            <dl class="data-list">
+              <div>
+                <dt data-i18n="direction">Sentido</dt>
+                <dd id="explore-direction"></dd>
+              </div>
+              <div>
+                <dt data-i18n="terminalLocation">Lado terminal</dt>
+                <dd id="explore-location"></dd>
+              </div>
+              <div>
+                <dt data-i18n="equivalentOneTurn">Equivalente en una vuelta</dt>
+                <dd id="explore-reduced"></dd>
+              </div>
+              <div>
+                <dt data-i18n="referenceAngle">Ángulo de referencia</dt>
+                <dd id="explore-reference"></dd>
+              </div>
+            </dl>
 
-          <div id="reduce-deg-input">
-            <div class="numeric-answer"><input id="reduced-deg" type="number"><span>°</span></div>
-          </div>
-
-          <div id="reduce-rad-input" hidden>
-            <div class="pi-fraction-input">
-              <input id="reduced-rad-num" type="number"><span class="pi-symbol">π</span>
-              <span class="fraction-divider"></span><input id="reduced-rad-den" type="number">
+            <div class="formula-card">
+              <strong data-i18n="coterminalRule">Regla de coterminalidad</strong>
+              <p id="coterminal-rule"></p>
             </div>
-          </div>
+          </section>
 
-          <button id="check-reduce" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
-          <div id="reduce-feedback" class="feedback" hidden></div>
-        </section>
+          <section id="build-panel" hidden>
+            <h3 data-i18n="buildTitle">Construye el ángulo</h3>
+            <p class="question-label" data-i18n="buildPrompt">
+              Arrastra el punto rosa para colocar el lado terminal en la posición correcta.
+            </p>
+
+            <div class="build-help">
+              <p data-i18n="buildHelp">
+                El lado inicial permanece sobre el eje x positivo. El movimiento se ajusta automáticamente cada 5°.
+              </p>
+            </div>
+
+            <button id="check-build" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
+            <div id="build-feedback" class="feedback" aria-live="polite" hidden></div>
+          </section>
+
+          <section id="coterminal-panel" hidden>
+            <h3 data-i18n="coterminalTitle">Genera ángulos coterminales</h3>
+            <p data-i18n="coterminalInstruction">
+              Escribe un ángulo coterminal positivo y uno negativo.
+            </p>
+
+            <div id="coterminal-deg-inputs">
+              <label class="answer-label" for="positive-coterminal-deg" data-i18n="positiveCoterminal">Coterminal positivo</label>
+              <div class="numeric-answer">
+                <input id="positive-coterminal-deg" type="number" step="5">
+                <span>°</span>
+              </div>
+
+              <label class="answer-label" for="negative-coterminal-deg" data-i18n="negativeCoterminal">Coterminal negativo</label>
+              <div class="numeric-answer">
+                <input id="negative-coterminal-deg" type="number" step="5">
+                <span>°</span>
+              </div>
+            </div>
+
+            <div id="coterminal-rad-inputs" hidden>
+              <p class="answer-label" data-i18n="positiveCoterminal">Coterminal positivo</p>
+              <div class="pi-fraction-input">
+                <input id="positive-rad-num" type="number" step="1" aria-label="Numerador positivo">
+                <span class="pi-symbol">π</span>
+                <span class="fraction-divider"></span>
+                <input id="positive-rad-den" type="number" step="1" aria-label="Denominador positivo">
+              </div>
+
+              <p class="answer-label" data-i18n="negativeCoterminal">Coterminal negativo</p>
+              <div class="pi-fraction-input">
+                <input id="negative-rad-num" type="number" step="1" aria-label="Numerador negativo">
+                <span class="pi-symbol">π</span>
+                <span class="fraction-divider"></span>
+                <input id="negative-rad-den" type="number" step="1" aria-label="Denominador negativo">
+              </div>
+            </div>
+
+            <button id="check-coterminal" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
+            <div id="coterminal-feedback" class="feedback" aria-live="polite" hidden></div>
+          </section>
+
+          <section id="reduce-panel" hidden>
+            <h3 data-i18n="reduceTitle">Reduce a una vuelta</h3>
+            <p data-i18n="reduceInstruction">
+              Encuentra el ángulo coterminal en el intervalo de una vuelta.
+            </p>
+
+            <div id="reduce-deg-input">
+              <div class="numeric-answer">
+                <input id="reduced-deg" type="number" step="5">
+                <span>°</span>
+              </div>
+            </div>
+
+            <div id="reduce-rad-input" hidden>
+              <div class="pi-fraction-input">
+                <input id="reduced-rad-num" type="number" step="1" aria-label="Numerador">
+                <span class="pi-symbol">π</span>
+                <span class="fraction-divider"></span>
+                <input id="reduced-rad-den" type="number" step="1" aria-label="Denominador">
+              </div>
+            </div>
+
+            <button id="check-reduce" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
+            <div id="reduce-feedback" class="feedback" aria-live="polite" hidden></div>
+          </section>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <footer class="app-footer">
-    <span>MEF · PM4000</span>
-    <span data-i18n="footerText">Recurso interactivo de práctica</span>
-  </footer>
-</main>
-<script src="app.js"></script>
+    <footer class="app-footer">
+      <span>MEF · PM4000</span>
+      <span data-i18n="footerText">Recurso interactivo de práctica</span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
