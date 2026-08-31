@@ -33,13 +33,13 @@ La interfaz inicia en español y puede cambiarse a inglés.
 
 ## GitHub Pages
 
-`https://barragana.github.io/MEF_PM4000/modulo_1/posicion_coterminales/`
+`https://barragana.github.io/MEF_PM4000/Modulo_1/estandar_coterminal/`
 
 ## Canvas
 
 ```html
 <iframe
-    src="https://barragana.github.io/MEF_PM4000/modulo_1/posicion_coterminales/"
+    src="https://barragana.github.io/MEF_PM4000/Modulo_1/estandar_coterminal/"
     width="100%"
     height="820"
     style="border: 0;"
