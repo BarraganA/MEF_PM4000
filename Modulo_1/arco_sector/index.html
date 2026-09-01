@@ -1,1 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longitud de arco y sector circular | PM4000</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell" aria-labelledby="app-title">
 
+    <header class="app-header">
+      <div>
+        <h1 id="app-title" data-i18n="appTitle">Longitud de arco y sector circular</h1>
+        <p class="app-subtitle" data-i18n="appSubtitle">
+          Explora cómo el radio y el ángulo determinan la longitud de arco y el área de un sector circular.
+        </p>
+      </div>
+
+      <label class="language-control" for="language-select">
+        <span data-i18n="languageLabel">Idioma</span>
+        <select id="language-select">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+    </header>
+
+    <nav class="mode-switch" aria-label="Modo de trabajo">
+      <button id="mode-explore" class="mode-button is-active" type="button" aria-pressed="true" data-i18n="modeExplore">
+        Explorar
+      </button>
+      <button id="mode-arc" class="mode-button" type="button" aria-pressed="false" data-i18n="modeArc">
+        Longitud de arco
+      </button>
+      <button id="mode-sector" class="mode-button" type="button" aria-pressed="false" data-i18n="modeSector">
+        Área del sector
+      </button>
+    </nav>
+
+    <section class="practice-panel">
+      <div class="section-heading">
+        <div>
+          <h2 id="practice-heading">Explora la relación</h2>
+          <p id="practice-instruction">
+            Modifica el radio y el ángulo para observar cómo cambian el arco y el sector.
+          </p>
+        </div>
+
+        <button id="new-exercise" class="button button-secondary" type="button" data-i18n="newExercise">
+          Nuevo ejercicio
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <label for="unit-select">
+          <span data-i18n="unitLabel">Mostrar ángulo en</span>
+          <select id="unit-select">
+            <option value="deg" data-i18n="degrees">Grados</option>
+            <option value="rad" data-i18n="radians">Radianes</option>
+          </select>
+        </label>
+
+        <label for="angle-set-select">
+          <span data-i18n="angleSetLabel">Tipo de ángulos</span>
+          <select id="angle-set-select">
+            <option value="mixed" data-i18n="mixedAngles">Mixto</option>
+            <option value="common" data-i18n="commonAngles">Ángulos comunes</option>
+            <option value="five" data-i18n="fiveAngles">Múltiplos de 5°</option>
+          </select>
+        </label>
+
+        <div class="step-note" data-i18n="stepNote">
+          En modo explorar, el ángulo se ajusta de 5° en 5°.
+        </div>
+      </div>
+
+      <div class="workspace-grid">
+
+        <div class="visual-card">
+          <div class="visual-topline">
+            <div class="metric-chip">
+              <span data-i18n="radiusLabel">Radio</span>
+              <strong id="radius-display">6</strong>
+            </div>
+            <div class="metric-chip">
+              <span data-i18n="angleLabel">Ángulo</span>
+              <strong id="angle-display">120°</strong>
+            </div>
+          </div>
+
+          <svg id="circle-svg" class="circle-svg" viewBox="0 0 520 420" role="img" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Sector circular</title>
+            <desc id="svg-desc">
+              Circunferencia con un ángulo central, dos radios, un arco y el sector circular resaltado.
+            </desc>
+
+            <defs>
+              <marker id="ray-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L7,3.5 z" class="ray-arrow-shape"></path>
+              </marker>
+              <marker id="arc-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L8,3.5 z" class="arc-arrow-shape"></path>
+              </marker>
+            </defs>
+
+            <circle cx="260" cy="215" r="145" class="base-circle"></circle>
+
+            <path id="sector-path" class="sector-fill" d=""></path>
+            <path id="arc-path" class="arc-path" d="" marker-end="url(#arc-arrow)"></path>
+
+            <line id="initial-radius" x1="260" y1="215" x2="405" y2="215" class="radius-line"></line>
+            <line id="terminal-radius" x1="260" y1="215" x2="187.5" y2="89.4" class="terminal-radius" marker-end="url(#ray-arrow)"></line>
+
+            <path id="angle-arc" class="angle-arc" d=""></path>
+
+            <circle cx="260" cy="215" r="6" class="center-dot"></circle>
+            <text x="247" y="238" class="center-label">O</text>
+
+            <text id="radius-label-svg" x="325" y="205" class="diagram-label">r</text>
+            <text id="arc-label-svg" x="185" y="72" class="diagram-label accent">s</text>
+            <text id="theta-label-svg" x="305" y="164" class="diagram-label theta">θ</text>
+
+            <circle id="drag-handle" cx="187.5" cy="89.4" r="13" class="drag-handle" tabindex="0"
+              role="slider" aria-valuemin="5" aria-valuemax="355" aria-valuenow="120"
+              aria-label="Ángulo central"></circle>
+          </svg>
+
+          <div id="explore-controls" class="explore-controls">
+            <div class="control-block">
+              <span class="control-label" data-i18n="radiusLabel">Radio</span>
+              <div class="stepper">
+                <button id="radius-minus" type="button" aria-label="Disminuir radio">−</button>
+                <strong id="radius-control-value">6</strong>
+                <button id="radius-plus" type="button" aria-label="Aumentar radio">+</button>
+              </div>
+            </div>
+
+            <div class="control-block">
+              <span class="control-label" data-i18n="angleLabel">Ángulo</span>
+              <div class="stepper">
+                <button id="angle-minus" type="button">−5°</button>
+                <strong id="angle-control-value">120°</strong>
+                <button id="angle-plus" type="button">+5°</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-card">
+
+          <section id="explore-panel">
+            <h3 data-i18n="exploreTitle">Observa qué cambia</h3>
+
+            <dl class="data-list">
+              <div>
+                <dt data-i18n="degreesValue">Ángulo en grados</dt>
+                <dd id="degrees-value">120°</dd>
+              </div>
+              <div>
+                <dt data-i18n="radiansValue">Ángulo en radianes</dt>
+                <dd id="radians-value">2π/3</dd>
+              </div>
+              <div>
+                <dt data-i18n="arcLength">Longitud de arco</dt>
+                <dd id="arc-value">4π ≈ 12.57</dd>
+              </div>
+              <div>
+                <dt data-i18n="sectorArea">Área del sector</dt>
+                <dd id="area-value">12π ≈ 37.70</dd>
+              </div>
+            </dl>
+
+            <div class="formula-card">
+              <strong data-i18n="formulaReminder">Recuerda</strong>
+              <p>s = rθ</p>
+              <p>A = ½r²θ</p>
+              <small data-i18n="radianReminder">
+                En estas fórmulas, θ debe estar expresado en radianes.
+              </small>
+            </div>
+
+            <div class="fraction-card">
+              <span data-i18n="circleFraction">Fracción de la circunferencia</span>
+              <strong id="fraction-turn">120° / 360° = 1/3</strong>
+              <div class="progress-track">
+                <div id="turn-progress" class="progress-fill"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="practice-panel-inner" hidden>
+            <h3 id="practice-question-title">Calcula la longitud de arco</h3>
+
+            <div class="problem-data">
+              <div>
+                <span data-i18n="radiusLabel">Radio</span>
+                <strong id="problem-radius">8</strong>
+              </div>
+              <div>
+                <span data-i18n="angleLabel">Ángulo</span>
+                <strong id="problem-angle">135°</strong>
+              </div>
+            </div>
+
+            <p id="practice-question-text" class="question-label">
+              Calcula la longitud del arco.
+            </p>
+
+            <div class="answer-format">
+              <span data-i18n="answerFormat">Formato de respuesta</span>
+              <div class="segmented-control">
+                <button id="answer-exact" type="button" class="segment-button is-active" aria-pressed="true" data-i18n="exactAnswer">
+                  Exacta
+                </button>
+                <button id="answer-decimal" type="button" class="segment-button" aria-pressed="false" data-i18n="decimalAnswer">
+                  Decimal
+                </button>
+              </div>
+            </div>
+
+            <div id="exact-answer-area">
+              <p class="answer-label" data-i18n="exactPiPrompt">
+                Escribe la respuesta como múltiplo de π.
+              </p>
+
+              <div class="pi-fraction-input">
+                <input id="exact-num" type="number" step="1" aria-label="Numerador">
+                <span class="pi-symbol">π</span>
+                <span class="fraction-divider"></span>
+                <input id="exact-den" type="number" step="1" min="1" value="1" aria-label="Denominador">
+              </div>
+
+              <p class="input-help" data-i18n="exactHelp">
+                Por ejemplo, para 6π escribe 6/1; para 7π/4 escribe 7/4.
+              </p>
+            </div>
+
+            <div id="decimal-answer-area" hidden>
+              <label class="answer-label" for="decimal-answer" data-i18n="decimalPrompt">
+                Escribe una aproximación decimal.
+              </label>
+              <input id="decimal-answer" class="decimal-input" type="number" step="0.01" inputmode="decimal">
+              <p class="input-help" data-i18n="decimalTolerance">
+                Se acepta una diferencia de hasta 0.02.
+              </p>
+            </div>
+
+            <div class="action-row">
+              <button id="hint-button" class="button button-secondary small-margin" type="button" data-i18n="showHint">
+                Mostrar pista
+              </button>
+              <button id="check-answer" class="button button-primary" type="button" data-i18n="checkAnswer">
+                Comprobar
+              </button>
+            </div>
+
+            <div id="hint-box" class="hint-box" hidden></div>
+            <div id="practice-feedback" class="feedback" aria-live="polite" hidden></div>
+
+            <div id="solution-box" class="solution-box" hidden>
+              <h4 data-i18n="solutionHeading">Procedimiento</h4>
+              <div id="solution-content"></div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <span>MEF · PM4000</span>
+      <span data-i18n="footerText">Recurso interactivo de práctica</span>
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
