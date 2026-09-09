@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diseño de rampas: inclinación y accesibilidad | PM4000</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app-shell" aria-labelledby="app-title">
+  <header class="app-header">
+    <div>
+      <h1 id="app-title" data-i18n="appTitle">Diseño de rampas: inclinación y accesibilidad</h1>
+      <p class="app-subtitle" data-i18n="appSubtitle">Mide, compara y analiza cómo cambia la inclinación cuando cambia el espacio disponible.</p>
+    </div>
+    <label class="language-control" for="language-select">
+      <span data-i18n="languageLabel">Idioma</span>
+      <select id="language-select"><option value="es">Español</option><option value="en">English</option></select>
+    </label>
+  </header>
+
+  <nav class="mode-switch" aria-label="Modo de trabajo">
+    <button id="mode-compare" class="mode-button is-active" type="button" aria-pressed="true" data-i18n="modeCompare">Comparar</button>
+    <button id="mode-design" class="mode-button" type="button" aria-pressed="false" data-i18n="modeDesign">Diseñar</button>
+    <button id="mode-plan" class="mode-button" type="button" aria-pressed="false" data-i18n="modePlan">Plano técnico</button>
+  </nav>
+
+  <section class="workspace">
+    <div class="visual-column">
+      <div class="visual-heading">
+        <div><span id="context-kicker" class="kicker">Rampa A</span><h2 id="context-title">Mide el ángulo de inclinación</h2></div>
+        <button id="new-task" type="button" class="button button-secondary" data-i18n="newTask">Nuevo ejercicio</button>
+      </div>
+
+      <svg id="ramp-svg" class="ramp-svg" viewBox="0 0 760 430" role="img" aria-labelledby="svg-title svg-desc">
+        <title id="svg-title">Diagrama lateral de una rampa</title>
+        <desc id="svg-desc">Una rampa conecta el nivel del suelo con una entrada elevada y contiene una herramienta para medir el ángulo con el suelo.</desc>
+        <defs>
+          <marker id="measure-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto"><path d="M0,0 L0,7 L7,3.5 z" class="measure-arrow-shape"></path></marker>
+        </defs>
+        <rect x="0" y="0" width="760" height="430" class="svg-bg"></rect>
+        <rect x="620" y="92" width="110" height="228" rx="4" class="building"></rect>
+        <rect x="642" y="158" width="66" height="132" rx="3" class="door"></rect>
+        <line x1="675" y1="158" x2="675" y2="290" class="door-line"></line>
+        <line x1="48" y1="340" x2="710" y2="340" class="ground-line"></line>
+        <line id="platform-line" x1="520" y1="230" x2="705" y2="230" class="platform-line"></line>
+        <line id="ramp-line" x1="170" y1="340" x2="560" y2="230" class="ramp-line"></line>
+        <line id="ramp-rail" x1="170" y1="314" x2="560" y2="204" class="rail-line"></line>
+        <line id="rail-start" x1="170" y1="314" x2="170" y2="340" class="rail-line"></line>
+        <line id="rail-end" x1="560" y1="204" x2="560" y2="230" class="rail-line"></line>
+        <line id="height-guide" x1="560" y1="230" x2="560" y2="340" class="guide-line"></line>
+        <line id="run-guide" x1="170" y1="340" x2="560" y2="340" class="guide-line"></line>
+        <text id="height-text" x="580" y="292" class="diagram-text">h</text>
+        <text id="run-text" x="350" y="366" class="diagram-text">d</text>
+        <g id="protractor-group">
+          <path id="protractor-arc" d="" class="protractor-arc"></path>
+          <line id="measure-ray" x1="170" y1="340" x2="315" y2="340" class="measure-ray" marker-end="url(#measure-arrow)"></line>
+          <circle id="measure-knob" cx="315" cy="340" r="11" class="measure-knob" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="45" aria-valuenow="0" aria-label="Ángulo medido"></circle>
+        </g>
+        <g id="angle-ticks"></g>
+      </svg>
+
+      <div id="measure-controls" class="measure-controls">
+        <button id="measure-minus" class="mini-button" type="button">−5°</button>
+        <div class="measure-readout"><span data-i18n="yourMeasurement">Tu medición</span><strong id="measure-value">0°</strong></div>
+        <button id="measure-plus" class="mini-button" type="button">+5°</button>
+      </div>
+    </div>
+
+    <div class="interaction-column">
+      <section id="compare-panel">
+        <h3 data-i18n="compareTitle">Compara las rampas</h3>
+        <p data-i18n="compareIntro">Selecciona una rampa, mide el ángulo que forma con el suelo y clasifícalo.</p>
+        <div class="ramp-selector" role="group" aria-label="Rampa">
+          <button type="button" class="ramp-choice is-active" data-ramp="A">A</button>
+          <button type="button" class="ramp-choice" data-ramp="B">B</button>
+          <button type="button" class="ramp-choice" data-ramp="C">C</button>
+        </div>
+        <button id="check-measurement" class="button button-primary" type="button" data-i18n="checkMeasurement">Comprobar medición</button>
+        <div id="measurement-feedback" class="feedback" hidden aria-live="polite"></div>
+        <div id="classification-area" hidden>
+          <p class="question-label" data-i18n="classifyPrompt">Ahora clasifica el ángulo:</p>
+          <div class="classification-options">
+            <label><input type="radio" name="classification" value="acute"> <span data-i18n="acute">Agudo</span></label>
+            <label><input type="radio" name="classification" value="right"> <span data-i18n="right">Recto</span></label>
+            <label><input type="radio" name="classification" value="obtuse"> <span data-i18n="obtuse">Obtuso</span></label>
+            <label><input type="radio" name="classification" value="straight"> <span data-i18n="straight">Llano</span></label>
+          </div>
+          <button id="check-classification" class="button button-secondary" type="button" data-i18n="checkClassification">Comprobar clasificación</button>
+          <div id="classification-feedback" class="feedback" hidden aria-live="polite"></div>
+        </div>
+        <div id="comparison-summary" class="summary-table-wrap" hidden>
+          <h4 data-i18n="summaryTitle">Resultados de comparación</h4>
+          <table class="summary-table"><thead><tr><th data-i18n="ramp">Rampa</th><th data-i18n="angle">Ángulo</th><th data-i18n="classification">Clasificación</th></tr></thead><tbody id="summary-body"></tbody></table>
+          <p class="reflection-note" data-i18n="summaryReflection">Las tres rampas pertenecen a la misma clasificación. Registra en Canvas qué diferencias observas entre sus medidas.</p>
+        </div>
+      </section>
+
+      <section id="design-panel" hidden>
+        <h3 data-i18n="designTitle">Experimenta con el espacio disponible</h3>
+        <p data-i18n="designIntro">Mantén fija la altura y cambia el espacio horizontal. Después mide la inclinación resultante.</p>
+        <label class="field-label" for="height-select"><span data-i18n="height">Altura</span><select id="height-select"><option value="0.40">0.40 m</option><option value="0.60" selected>0.60 m</option><option value="0.80">0.80 m</option><option value="1.00">1.00 m</option></select></label>
+        <div class="space-picker"><span class="field-label-text" data-i18n="horizontalSpace">Espacio horizontal disponible</span><div id="space-buttons" class="space-buttons"></div></div>
+        <button id="check-design-measurement" class="button button-primary" type="button" data-i18n="checkMeasurement">Comprobar medición</button>
+        <div id="design-feedback" class="feedback" hidden aria-live="polite"></div>
+        <button id="record-case" class="button button-secondary" type="button" hidden data-i18n="recordCase">Registrar caso</button>
+        <div id="recorded-cases-wrap" class="summary-table-wrap" hidden>
+          <h4 data-i18n="recordedCases">Casos registrados</h4>
+          <table class="summary-table"><thead><tr><th data-i18n="case">Caso</th><th data-i18n="height">Altura</th><th data-i18n="horizontalSpace">Espacio horizontal</th><th data-i18n="angle">Ángulo</th></tr></thead><tbody id="recorded-cases-body"></tbody></table>
+          <p id="pattern-prompt" class="reflection-note" hidden data-i18n="patternPrompt">Ya tienes tres casos. Busca una regularidad entre el espacio horizontal y la inclinación, y regístrala en Canvas.</p>
+        </div>
+      </section>
+
+      <section id="plan-panel" hidden>
+        <h3 data-i18n="planTitle">Interpreta un plano técnico</h3>
+        <p data-i18n="planIntro">El ángulo de una propuesta aparece expresado en radianes. Conviértelo a grados y clasifícalo.</p>
+        <div class="technical-value"><span>θ =</span><strong id="radian-prompt">π/18</strong><span>rad</span></div>
+        <label class="field-label" for="degree-answer"><span data-i18n="degreesAnswer">Ángulo en grados</span><div class="degree-input-wrap"><input id="degree-answer" type="number" step="5"><span>°</span></div></label>
+        <p class="question-label" data-i18n="classifyPrompt">Ahora clasifica el ángulo:</p>
+        <div class="classification-options">
+          <label><input type="radio" name="plan-classification" value="acute"> <span data-i18n="acute">Agudo</span></label>
+          <label><input type="radio" name="plan-classification" value="right"> <span data-i18n="right">Recto</span></label>
+          <label><input type="radio" name="plan-classification" value="obtuse"> <span data-i18n="obtuse">Obtuso</span></label>
+          <label><input type="radio" name="plan-classification" value="straight"> <span data-i18n="straight">Llano</span></label>
+        </div>
+        <button id="check-plan" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
+        <div id="plan-feedback" class="feedback" hidden aria-live="polite"></div>
+      </section>
+    </div>
+  </section>
+
+  <footer class="app-footer"><span>MEF · PM4000</span><span data-i18n="footerText">Recurso interactivo de práctica</span></footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
