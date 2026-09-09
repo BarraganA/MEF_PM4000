@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diseño de rampas: inclinación y accesibilidad | PM4000</title>
+  <title>Diseño para accesibilidad | PM4000</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <main class="app-shell" aria-labelledby="app-title">
   <header class="app-header">
     <div>
-      <h1 id="app-title" data-i18n="appTitle">Diseño de rampas: inclinación y accesibilidad</h1>
-      <p class="app-subtitle" data-i18n="appSubtitle">Mide, compara y analiza cómo cambia la inclinación cuando cambia el espacio disponible.</p>
+      <h1 id="app-title" data-i18n="appTitle">Diseño para accesibilidad</h1>
+      <p class="app-subtitle" data-i18n="appSubtitle">Mide, compara y analiza cómo cambia la inclinación de una rampa cuando cambia el espacio disponible.</p>
     </div>
     <label class="language-control" for="language-select">
       <span data-i18n="languageLabel">Idioma</span>
@@ -22,7 +22,6 @@
   <nav class="mode-switch" aria-label="Modo de trabajo">
     <button id="mode-compare" class="mode-button is-active" type="button" aria-pressed="true" data-i18n="modeCompare">Comparar</button>
     <button id="mode-design" class="mode-button" type="button" aria-pressed="false" data-i18n="modeDesign">Diseñar</button>
-    <button id="mode-plan" class="mode-button" type="button" aria-pressed="false" data-i18n="modePlan">Plano técnico</button>
   </nav>
 
   <section class="workspace">
@@ -89,11 +88,7 @@
           <button id="check-classification" class="button button-secondary" type="button" data-i18n="checkClassification">Comprobar clasificación</button>
           <div id="classification-feedback" class="feedback" hidden aria-live="polite"></div>
         </div>
-        <div id="comparison-summary" class="summary-table-wrap" hidden>
-          <h4 data-i18n="summaryTitle">Resultados de comparación</h4>
-          <table class="summary-table"><thead><tr><th data-i18n="ramp">Rampa</th><th data-i18n="angle">Ángulo</th><th data-i18n="classification">Clasificación</th></tr></thead><tbody id="summary-body"></tbody></table>
-          <p class="reflection-note" data-i18n="summaryReflection">Las tres rampas pertenecen a la misma clasificación. Registra en Canvas qué diferencias observas entre sus medidas.</p>
-        </div>
+        <p id="compare-note" class="reflection-note" hidden data-i18n="compareNote">Registra este resultado en tu actividad de Canvas y continúa con otra rampa.</p>
       </section>
 
       <section id="design-panel" hidden>
@@ -103,28 +98,7 @@
         <div class="space-picker"><span class="field-label-text" data-i18n="horizontalSpace">Espacio horizontal disponible</span><div id="space-buttons" class="space-buttons"></div></div>
         <button id="check-design-measurement" class="button button-primary" type="button" data-i18n="checkMeasurement">Comprobar medición</button>
         <div id="design-feedback" class="feedback" hidden aria-live="polite"></div>
-        <button id="record-case" class="button button-secondary" type="button" hidden data-i18n="recordCase">Registrar caso</button>
-        <div id="recorded-cases-wrap" class="summary-table-wrap" hidden>
-          <h4 data-i18n="recordedCases">Casos registrados</h4>
-          <table class="summary-table"><thead><tr><th data-i18n="case">Caso</th><th data-i18n="height">Altura</th><th data-i18n="horizontalSpace">Espacio horizontal</th><th data-i18n="angle">Ángulo</th></tr></thead><tbody id="recorded-cases-body"></tbody></table>
-          <p id="pattern-prompt" class="reflection-note" hidden data-i18n="patternPrompt">Ya tienes tres casos. Busca una regularidad entre el espacio horizontal y la inclinación, y regístrala en Canvas.</p>
-        </div>
-      </section>
-
-      <section id="plan-panel" hidden>
-        <h3 data-i18n="planTitle">Interpreta un plano técnico</h3>
-        <p data-i18n="planIntro">El ángulo de una propuesta aparece expresado en radianes. Conviértelo a grados y clasifícalo.</p>
-        <div class="technical-value"><span>θ =</span><strong id="radian-prompt">π/18</strong><span>rad</span></div>
-        <label class="field-label" for="degree-answer"><span data-i18n="degreesAnswer">Ángulo en grados</span><div class="degree-input-wrap"><input id="degree-answer" type="number" step="5"><span>°</span></div></label>
-        <p class="question-label" data-i18n="classifyPrompt">Ahora clasifica el ángulo:</p>
-        <div class="classification-options">
-          <label><input type="radio" name="plan-classification" value="acute"> <span data-i18n="acute">Agudo</span></label>
-          <label><input type="radio" name="plan-classification" value="right"> <span data-i18n="right">Recto</span></label>
-          <label><input type="radio" name="plan-classification" value="obtuse"> <span data-i18n="obtuse">Obtuso</span></label>
-          <label><input type="radio" name="plan-classification" value="straight"> <span data-i18n="straight">Llano</span></label>
-        </div>
-        <button id="check-plan" class="button button-primary" type="button" data-i18n="checkAnswer">Comprobar</button>
-        <div id="plan-feedback" class="feedback" hidden aria-live="polite"></div>
+        <p id="design-note" class="reflection-note" hidden data-i18n="designNote">Registra en Canvas la altura, el espacio horizontal y el ángulo obtenido. Después prueba otra configuración.</p>
       </section>
     </div>
   </section>
