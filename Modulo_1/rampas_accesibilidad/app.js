@@ -190,37 +190,100 @@ function drawCurrentRamp() {
 }
 
 function drawRampForAngle(angle, heightMeters, runMeters) {
-  const startX = 126;
   const groundY = 340;
-  const maxRunPx = 470;
-  const maxHeightPx = 165;
-  const heightPx = Math.min(maxHeightPx, 88 + heightMeters * 62);
+  const endX = 560;
+
+  const maxRunPx = 430;
+  const maxHeightPx = 160;
+
+  let scale;
+
+  if (state.mode === "compare") {
+    // Las rampas A, B y C alcanzan la misma altura.
+    // Usamos una sola escala para que el dibujo conserve
+    // correctamente los ángulos de 5°, 10° y 15°.
+    const commonHeight = 0.60;
+    const longestRun =
+      commonHeight / Math.tan(5 * Math.PI / 180);
+
+    scale = Math.min(
+      maxRunPx / longestRun,
+      maxHeightPx / commonHeight
+    );
+  } else {
+    // En modo Diseñar usamos la misma escala
+    // para horizontal y vertical.
+    scale = Math.min(
+      maxRunPx / runMeters,
+      maxHeightPx / heightMeters
+    );
+  }
+
+  const runPx = runMeters * scale;
+  const heightPx = heightMeters * scale;
+
+  const startX = endX - runPx;
   const endY = groundY - heightPx;
-  const scale = Math.min(maxRunPx / runMeters, 560 / Math.max(runMeters, 1));
-  const runPx = Math.min(maxRunPx, Math.max(170, runMeters * scale));
-  const endX = startX + runPx;
+
   const railOffset = 26;
 
-  el.rampLine.setAttribute("x1", startX); el.rampLine.setAttribute("y1", groundY);
-  el.rampLine.setAttribute("x2", endX); el.rampLine.setAttribute("y2", endY);
-  el.rampRail.setAttribute("x1", startX); el.rampRail.setAttribute("y1", groundY - railOffset);
-  el.rampRail.setAttribute("x2", endX); el.rampRail.setAttribute("y2", endY - railOffset);
-  el.railStart.setAttribute("x1", startX); el.railStart.setAttribute("y1", groundY - railOffset);
-  el.railStart.setAttribute("x2", startX); el.railStart.setAttribute("y2", groundY);
-  el.railEnd.setAttribute("x1", endX); el.railEnd.setAttribute("y1", endY - railOffset);
-  el.railEnd.setAttribute("x2", endX); el.railEnd.setAttribute("y2", endY);
-  el.platformLine.setAttribute("x1", endX); el.platformLine.setAttribute("y1", endY);
-  el.platformLine.setAttribute("x2", 705); el.platformLine.setAttribute("y2", endY);
-  el.heightGuide.setAttribute("x1", endX); el.heightGuide.setAttribute("y1", endY);
-  el.heightGuide.setAttribute("x2", endX); el.heightGuide.setAttribute("y2", groundY);
-  el.runGuide.setAttribute("x1", startX); el.runGuide.setAttribute("y1", groundY);
-  el.runGuide.setAttribute("x2", endX); el.runGuide.setAttribute("y2", groundY);
-  el.heightText.setAttribute("x", endX + 18); el.heightText.setAttribute("y", (groundY + endY) / 2);
-  el.runText.setAttribute("x", (startX + endX) / 2); el.runText.setAttribute("y", groundY + 28);
+  // Rampa
+  el.rampLine.setAttribute("x1", startX);
+  el.rampLine.setAttribute("y1", groundY);
+  el.rampLine.setAttribute("x2", endX);
+  el.rampLine.setAttribute("y2", endY);
+
+  // Barandal
+  el.rampRail.setAttribute("x1", startX);
+  el.rampRail.setAttribute("y1", groundY - railOffset);
+  el.rampRail.setAttribute("x2", endX);
+  el.rampRail.setAttribute("y2", endY - railOffset);
+
+  el.railStart.setAttribute("x1", startX);
+  el.railStart.setAttribute("y1", groundY - railOffset);
+  el.railStart.setAttribute("x2", startX);
+  el.railStart.setAttribute("y2", groundY);
+
+  el.railEnd.setAttribute("x1", endX);
+  el.railEnd.setAttribute("y1", endY - railOffset);
+  el.railEnd.setAttribute("x2", endX);
+  el.railEnd.setAttribute("y2", endY);
+
+  // Plataforma
+  el.platformLine.setAttribute("x1", endX);
+  el.platformLine.setAttribute("y1", endY);
+  el.platformLine.setAttribute("x2", 705);
+  el.platformLine.setAttribute("y2", endY);
+
+  // Guías
+  el.heightGuide.setAttribute("x1", endX);
+  el.heightGuide.setAttribute("y1", endY);
+  el.heightGuide.setAttribute("x2", endX);
+  el.heightGuide.setAttribute("y2", groundY);
+
+  el.runGuide.setAttribute("x1", startX);
+  el.runGuide.setAttribute("y1", groundY);
+  el.runGuide.setAttribute("x2", endX);
+  el.runGuide.setAttribute("y2", groundY);
+
+  el.heightText.setAttribute("x", endX + 18);
+  el.heightText.setAttribute(
+    "y",
+    (groundY + endY) / 2
+  );
+
+  el.runText.setAttribute(
+    "x",
+    (startX + endX) / 2
+  );
+  el.runText.setAttribute("y", groundY + 28);
 
   if (state.mode === "design") {
-    el.heightText.textContent = `${heightMeters.toFixed(2)} m`;
-    el.runText.textContent = `${runMeters.toFixed(2)} m`;
+    el.heightText.textContent =
+      `${heightMeters.toFixed(2)} m`;
+
+    el.runText.textContent =
+      `${runMeters.toFixed(2)} m`;
   } else {
     el.heightText.textContent = "h";
     el.runText.textContent = "d";
@@ -228,7 +291,6 @@ function drawRampForAngle(angle, heightMeters, runMeters) {
 
   positionMeasureOrigin(startX, groundY);
 }
-
 function positionMeasureOrigin(x, y) {
   el.measureRay.setAttribute("x1", x);
   el.measureRay.setAttribute("y1", y);
