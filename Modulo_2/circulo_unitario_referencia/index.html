@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explora el círculo unitario | PM4000</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell" aria-labelledby="app-title">
+
+    <header class="app-header">
+      <div>
+        <h1 id="app-title" data-i18n="appTitle">Explora el círculo unitario</h1>
+        <p class="app-subtitle" data-i18n="appSubtitle">
+          Relaciona el ángulo, su posición, el ángulo de referencia y las coordenadas del punto terminal.
+        </p>
+      </div>
+
+      <label class="language-control" for="language-select">
+        <span data-i18n="languageLabel">Idioma</span>
+        <select id="language-select">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+    </header>
+
+    <nav class="mode-switch" aria-label="Modo de trabajo">
+      <button id="mode-explore" class="mode-button is-active" type="button" aria-pressed="true" data-i18n="modeExplore">
+        Explorar
+      </button>
+      <button id="mode-practice" class="mode-button" type="button" aria-pressed="false" data-i18n="modePractice">
+        Practicar
+      </button>
+    </nav>
+
+    <section class="workspace">
+
+      <div class="visual-column">
+        <div class="visual-heading">
+          <div>
+            <span id="context-kicker" class="kicker" data-i18n="exploreKicker">Exploración</span>
+            <h2 id="context-title" data-i18n="exploreTitle">Mueve el punto sobre el círculo</h2>
+          </div>
+
+          <button id="new-task" type="button" class="button button-secondary" hidden data-i18n="newTask">
+            Nuevo ejercicio
+          </button>
+        </div>
+
+        <svg id="unit-circle-svg"
+             class="unit-circle-svg"
+             viewBox="0 0 620 620"
+             role="img"
+             aria-labelledby="svg-title svg-desc">
+
+          <title id="svg-title">Círculo unitario con punto terminal</title>
+          <desc id="svg-desc">
+            Un círculo unitario centrado en el origen. Un punto móvil sobre la circunferencia define un ángulo en posición estándar.
+          </desc>
+
+          <rect x="0" y="0" width="620" height="620" class="svg-bg"></rect>
+
+          <!-- Quadrant shading -->
+          <path d="M310,310 L310,60 A250,250 0 0 1 560,310 Z" class="quad-fill q1"></path>
+          <path d="M310,310 L60,310 A250,250 0 0 1 310,60 Z" class="quad-fill q2"></path>
+          <path d="M310,310 L310,560 A250,250 0 0 1 60,310 Z" class="quad-fill q3"></path>
+          <path d="M310,310 L560,310 A250,250 0 0 1 310,560 Z" class="quad-fill q4"></path>
+
+          <!-- Axes -->
+          <line x1="45" y1="310" x2="575" y2="310" class="axis-line"></line>
+          <line x1="310" y1="575" x2="310" y2="45" class="axis-line"></line>
+
+          <text x="578" y="302" class="axis-label">x</text>
+          <text x="320" y="47" class="axis-label">y</text>
+
+          <!-- Tick marks -->
+          <g id="axis-ticks">
+            <line x1="560" y1="303" x2="560" y2="317" class="axis-tick"></line>
+            <line x1="60" y1="303" x2="60" y2="317" class="axis-tick"></line>
+            <line x1="303" y1="60" x2="317" y2="60" class="axis-tick"></line>
+            <line x1="303" y1="560" x2="317" y2="560" class="axis-tick"></line>
+
+            <text x="553" y="338" class="tick-label">1</text>
+            <text x="47" y="338" class="tick-label">−1</text>
+            <text x="326" y="67" class="tick-label">1</text>
+            <text x="322" y="567" class="tick-label">−1</text>
+            <text x="292" y="334" class="tick-label">0</text>
+          </g>
+
+          <!-- Circle -->
+          <circle cx="310" cy="310" r="250" class="unit-circle"></circle>
+
+          <!-- Main angle arc -->
+          <path id="theta-arc" d="" class="theta-arc"></path>
+
+          <!-- Radius -->
+          <line id="radius-line" x1="310" y1="310" x2="560" y2="310" class="radius-line"></line>
+
+          <!-- Reference triangle -->
+          <g id="reference-triangle">
+            <line id="horizontal-leg" x1="310" y1="310" x2="560" y2="310" class="triangle-leg"></line>
+            <line id="vertical-leg" x1="560" y1="310" x2="560" y2="310" class="triangle-leg"></line>
+          </g>
+
+          <!-- Reference angle arc -->
+          <path id="reference-arc" d="" class="reference-arc"></path>
+
+          <!-- Point -->
+          <circle id="terminal-point"
+                  cx="560"
+                  cy="310"
+                  r="13"
+                  class="terminal-point"
+                  tabindex="0"
+                  role="slider"
+                  aria-valuemin="0"
+                  aria-valuemax="360"
+                  aria-valuenow="0"
+                  aria-label="Ángulo">
+          </circle>
+
+          <text id="point-label" x="575" y="292" class="point-label">P(1, 0)</text>
+          <text id="theta-label" x="380" y="292" class="theta-label">θ</text>
+          <text id="alpha-label" x="520" y="300" class="alpha-label">α</text>
+        </svg>
+
+        <div class="angle-controls" id="angle-controls">
+          <button id="angle-minus" class="mini-button" type="button">−5°</button>
+
+          <div class="angle-readout">
+            <span>θ</span>
+            <strong id="angle-value">0°</strong>
+          </div>
+
+          <button id="angle-plus" class="mini-button" type="button">+5°</button>
+        </div>
+      </div>
+
+      <div class="interaction-column">
+
+        <!-- EXPLORE -->
+        <section id="explore-panel">
+
+          <h3 data-i18n="explorePanelTitle">Observa qué cambia</h3>
+
+          <p data-i18n="exploreIntro">
+            Arrastra el punto sobre la circunferencia o utiliza los botones para cambiar el ángulo.
+          </p>
+
+          <label class="toggle-row">
+            <input id="snap-notable" type="checkbox">
+            <span data-i18n="snapNotable">Ajustar a ángulos notables</span>
+          </label>
+
+          <div class="data-list">
+
+            <div class="data-row">
+              <span data-i18n="angleTheta">Ángulo θ</span>
+              <strong id="theta-display">0°</strong>
+            </div>
+
+            <div class="data-row">
+              <span data-i18n="angleRadians">En radianes</span>
+              <strong id="radian-display">0</strong>
+            </div>
+
+            <div class="data-row">
+              <span data-i18n="quadrant">Cuadrante</span>
+              <strong id="quadrant-display">—</strong>
+            </div>
+
+            <div class="data-row">
+              <span data-i18n="referenceAngle">Ángulo de referencia</span>
+              <strong id="reference-display">—</strong>
+            </div>
+
+            <div class="data-row">
+              <span>P(x, y)</span>
+              <strong id="coordinate-display">(1, 0)</strong>
+            </div>
+
+          </div>
+
+          <button id="toggle-trig"
+                  class="button button-primary"
+                  type="button"
+                  data-i18n="showTrig">
+            Mostrar razones trigonométricas
+          </button>
+
+          <div id="trig-panel" class="trig-panel" hidden>
+
+            <p class="trig-intro" data-i18n="trigIntro">
+              En el círculo unitario, el radio vale 1. Por eso las coordenadas del punto terminal coinciden con coseno y seno.
+            </p>
+
+            <div class="formula-line">
+              <span>cos θ</span>
+              <strong id="cos-display">= 1</strong>
+            </div>
+
+            <div class="formula-line">
+              <span>sen θ</span>
+              <strong id="sin-display">= 0</strong>
+            </div>
+
+            <div class="formula-line">
+              <span>tan θ</span>
+              <strong id="tan-display">= 0</strong>
+            </div>
+
+            <p id="sign-note" class="reflection-note"></p>
+
+          </div>
+
+        </section>
+
+
+        <!-- PRACTICE -->
+        <section id="practice-panel" hidden>
+
+          <h3 data-i18n="practiceTitle">Analiza el ángulo</h3>
+
+          <p data-i18n="practiceIntro">
+            Para el ángulo mostrado, identifica el cuadrante, el ángulo de referencia y los signos de seno, coseno y tangente.
+          </p>
+
+          <div class="practice-angle-card">
+            <span>θ =</span>
+            <strong id="practice-angle">140°</strong>
+          </div>
+
+          <label class="field-label" for="quadrant-answer">
+            <span data-i18n="quadrantQuestion">¿En qué cuadrante está?</span>
+            <select id="quadrant-answer">
+              <option value="">—</option>
+              <option value="I">I</option>
+              <option value="II">II</option>
+              <option value="III">III</option>
+              <option value="IV">IV</option>
+            </select>
+          </label>
+
+          <label class="field-label" for="reference-answer">
+            <span data-i18n="referenceQuestion">¿Cuál es su ángulo de referencia?</span>
+            <div class="inline-input">
+              <input id="reference-answer" type="number" min="1" max="89" step="1">
+              <span>°</span>
+            </div>
+          </label>
+
+          <p class="question-label" data-i18n="signQuestion">
+            Indica el signo de cada razón:
+          </p>
+
+          <div class="sign-grid">
+
+            <div class="sign-row">
+              <span>sen θ</span>
+              <div>
+                <label><input type="radio" name="sin-sign" value="+"> +</label>
+                <label><input type="radio" name="sin-sign" value="-"> −</label>
+              </div>
+            </div>
+
+            <div class="sign-row">
+              <span>cos θ</span>
+              <div>
+                <label><input type="radio" name="cos-sign" value="+"> +</label>
+                <label><input type="radio" name="cos-sign" value="-"> −</label>
+              </div>
+            </div>
+
+            <div class="sign-row">
+              <span>tan θ</span>
+              <div>
+                <label><input type="radio" name="tan-sign" value="+"> +</label>
+                <label><input type="radio" name="tan-sign" value="-"> −</label>
+              </div>
+            </div>
+
+          </div>
+
+          <button id="check-practice"
+                  class="button button-primary"
+                  type="button"
+                  data-i18n="checkAnswer">
+            Comprobar
+          </button>
+
+          <div id="practice-feedback"
+               class="feedback"
+               hidden
+               aria-live="polite">
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+    <footer class="app-footer">
+      <span>MEF · PM4000</span>
+      <span data-i18n="footerText">Recurso interactivo de práctica</span>
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
