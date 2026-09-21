@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="pageTitle">¿Cuánto puede retroceder una costa?</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <div class="topbar"></div>
+
+    <header class="app-header">
+      <div class="header-copy">
+        <p class="eyebrow" data-i18n="eyebrow">Trigonometría aplicada</p>
+        <h1 data-i18n="title">¿Cuánto puede retroceder una costa?</h1>
+        <p class="subtitle" data-i18n="subtitle">
+          Modifica el aumento del nivel del mar y la pendiente del terreno.
+          Observa cómo un cambio vertical puede producir un desplazamiento horizontal mucho mayor.
+        </p>
+      </div>
+
+      <div class="language-switch" role="group" aria-label="Idioma / Language">
+        <button id="langEs" type="button" class="lang-btn active" data-lang="es">ES</button>
+        <button id="langEn" type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </header>
+
+    <section class="main-grid">
+      <div class="scene-card">
+        <div class="scene-head">
+          <strong data-i18n="modelTitle">Modelo de una costa</strong>
+          <span class="scale-note" data-i18n="scaleNote">
+            Visualización vertical amplificada para facilitar la observación.
+          </span>
+        </div>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 900 505" role="img" aria-labelledby="svgTitle svgDesc">
+            <title id="svgTitle" data-i18n="svgTitle">Simulación de una costa con aumento del nivel del mar</title>
+            <desc id="svgDesc" data-i18n="svgDesc">
+              Una sección lateral de una costa muestra el nivel original del mar, el nuevo nivel,
+              el aumento vertical h y el retroceso horizontal d.
+            </desc>
+
+            <defs>
+              <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ccecf5"/>
+                <stop offset="100%" stop-color="#9ed8e8"/>
+              </linearGradient>
+
+              <linearGradient id="landGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#b9cf9a"/>
+                <stop offset="100%" stop-color="#f0dfbd"/>
+              </linearGradient>
+
+              <marker id="arrowPink" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill="#D31F60"/>
+              </marker>
+
+              <marker id="arrowDark" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill="#3b091b"/>
+              </marker>
+            </defs>
+
+            <rect x="0" y="0" width="900" height="505" fill="#edf9fc"/>
+            <circle cx="760" cy="78" r="33" fill="#f7d980" opacity=".9"/>
+
+            <rect id="oldSeaFill" x="0" y="342" width="900" height="163" fill="url(#seaGrad)" opacity=".42"/>
+            <rect id="newSeaFill" x="0" y="320" width="900" height="185" fill="url(#seaGrad)" opacity=".82"/>
+
+            <path id="landShape" d="" fill="url(#landGrad)"/>
+
+            <line id="oldSeaLine" x1="0" y1="342" x2="900" y2="342"
+                  stroke="#6eaec0" stroke-width="3" stroke-dasharray="10 8"/>
+            <line id="newSeaLine" x1="0" y1="320" x2="900" y2="320"
+                  stroke="#217d98" stroke-width="4"/>
+
+            <line id="terrainLine" x1="250" y1="430" x2="860" y2="180"
+                  stroke="#7c6e50" stroke-width="5" stroke-linecap="round"/>
+
+            <circle id="oldCoastPoint" cx="460" cy="342" r="7" fill="#3b091b"/>
+            <circle id="newCoastPoint" cx="510" cy="320" r="8" fill="#D31F60"/>
+
+            <line id="hLine" x1="225" y1="342" x2="225" y2="320"
+                  stroke="#D31F60" stroke-width="3"
+                  marker-start="url(#arrowPink)" marker-end="url(#arrowPink)"/>
+
+            <line id="dLine" x1="460" y1="384" x2="510" y2="384"
+                  stroke="#3b091b" stroke-width="3"
+                  marker-start="url(#arrowDark)" marker-end="url(#arrowDark)"/>
+
+            <text id="hLabel" x="195" y="333" class="label">h</text>
+            <text id="dLabel" x="480" y="410" class="label">d</text>
+
+            <text x="28" y="309" class="minor-label" data-i18n="newSeaLevel">Nuevo nivel del mar</text>
+            <text x="28" y="370" class="minor-label" data-i18n="originalSeaLevel">Nivel original</text>
+
+            <text id="angleLabel" x="690" y="412" class="label">θ = 0.5°</text>
+            <path id="angleArc" d="" fill="none" stroke="#D31F60" stroke-width="3"/>
+            <line x1="664" y1="425" x2="752" y2="425" stroke="#3b091b" stroke-width="2"/>
+
+            <text x="26" y="45" class="minor-label" data-i18n="ocean">Océano</text>
+            <text x="748" y="155" class="minor-label" data-i18n="terrain">Terreno</text>
+          </svg>
+        </div>
+      </div>
+
+      <aside class="controls">
+        <div class="control-group">
+          <div class="control-title">
+            <label for="rise" data-i18n="riseLabel">Aumento del nivel del mar</label>
+            <span class="value-pill" id="riseValue">30 cm</span>
+          </div>
+          <input id="rise" type="range" min="0" max="100" step="1" value="30" />
+          <div class="range-ends">
+            <span>0 cm</span>
+            <span>100 cm</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-title">
+            <label for="angle" data-i18n="slopeLabel">Pendiente de la costa</label>
+            <span class="value-pill" id="angleValue">0.5°</span>
+          </div>
+          <input id="angle" type="range" min="0.1" max="5" step="0.1" value="0.5" />
+          <div class="range-ends">
+            <span>0.1°</span>
+            <span>5°</span>
+          </div>
+
+          <div class="quick">
+            <button type="button" data-angle="0.1" data-i18n="veryGentle">0.1° Muy suave</button>
+            <button type="button" data-angle="1" data-i18n="gentle">1° Suave</button>
+            <button type="button" data-angle="5" data-i18n="steep">5° Pronunciada</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="readout">
+      <div class="result-card">
+        <div class="eyebrow" data-i18n="retreatLabel">La costa retrocede aproximadamente</div>
+        <div class="big-number" id="distanceValue">34.4 m</div>
+        <div class="unit-note" data-i18n="distanceNote">
+          desplazamiento horizontal estimado por el modelo
+        </div>
+
+        <div class="factor">
+          <span data-i18n="factorLabel">Factor de amplificación horizontal:</span>
+          <strong id="factorValue">114.6</strong>
+        </div>
+
+        <div class="interpretation" id="factorText"></div>
+      </div>
+
+      <div class="math-card">
+        <details>
+          <summary data-i18n="mathSummary">¿De dónde sale este resultado?</summary>
+
+          <div class="formula">tan(θ) = h / d</div>
+          <div class="formula">d = h / tan(θ)</div>
+          <div class="formula">cot(θ) = 1 / tan(θ)</div>
+          <div class="formula"><strong>d = h · cot(θ)</strong></div>
+
+          <div class="substitution" id="substitution"></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="compare-wrap">
+      <div class="compare-card">
+        <div class="compare-actions">
+          <div>
+            <h2 class="compare-title" data-i18n="compareTitle">
+              Compara el mismo aumento del nivel del mar en tres costas
+            </h2>
+            <div class="interpretation" data-i18n="compareNote">
+              Mantendremos fijo el valor de h que elegiste.
+            </div>
+          </div>
+
+          <button id="compareBtn" class="primary" type="button" data-i18n="compareButton">
+            Comparar escenarios
+          </button>
+        </div>
+
+        <div id="comparison" class="comparison">
+          <div class="scenario">
+            <div class="angle">0.1°</div>
+            <small data-i18n="scenarioVeryGentle">Pendiente muy suave</small>
+            <div class="distance" id="d01">171.9 m</div>
+          </div>
+
+          <div class="scenario">
+            <div class="angle">1°</div>
+            <small data-i18n="scenarioGentle">Pendiente suave</small>
+            <div class="distance" id="d1">17.2 m</div>
+          </div>
+
+          <div class="scenario">
+            <div class="angle">5°</div>
+            <small data-i18n="scenarioSteep">Pendiente más pronunciada</small>
+            <div class="distance" id="d5">3.4 m</div>
+          </div>
+        </div>
+
+        <div id="comparePrompt" class="prompt" hidden>
+          <span data-i18n="comparePrompt">
+            El aumento del nivel del mar es exactamente el mismo en los tres escenarios.
+            ¿Qué variable explica la diferencia en el retroceso?
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note" data-i18n="modelDisclaimer">
+      Este recurso representa un modelo geométrico simplificado. Una costa real también depende
+      de factores como erosión, oleaje, mareas, topografía y obras costeras.
+    </p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
