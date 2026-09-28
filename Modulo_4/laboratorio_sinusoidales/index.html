@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratorio de funciones sinusoidales</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+<header>
+  <div>
+    <p class="eyebrow">Módulo V · Laboratorio interactivo</p>
+    <h1 id="title">Laboratorio de funciones sinusoidales</h1>
+    <p id="subtitle">Representación y análisis de funciones seno y coseno.</p>
+  </div>
+  <button id="lang">EN</button>
+</header>
+
+<nav>
+  <button class="tab active" data-mode="explore">Explorar</button>
+  <button class="tab" data-mode="five">Cinco puntos</button>
+  <button class="tab" data-mode="identify">Identificar función</button>
+</nav>
+
+<section class="layout">
+  <section class="panel graphpanel">
+    <div class="head">
+      <div>
+        <p class="kicker" id="kicker">Explorar</p>
+        <h2 id="modeTitle">Transforma la función y observa la gráfica</h2>
+      </div>
+      <div class="viewtools"><button id="zoomIn" class="secondary" type="button" aria-label="Acercar">+</button><button id="zoomOut" class="secondary" type="button" aria-label="Alejar">−</button><button id="reset" class="secondary" type="button">Restablecer vista</button></div>
+    </div>
+    <div class="canvasbox"><canvas id="graph" role="img" aria-label="Plano cartesiano interactivo" tabindex="0"></canvas></div>
+    <div class="legend">
+      <span><i class="line pink"></i>Función</span>
+      <span id="baseLegend"><i class="line blue"></i>Función base</span>
+      <span id="pointLegend" class="hidden"><i class="dot"></i>Tus puntos</span>
+    </div>
+    <p id="graphMsg" class="muted"></p>
+  </section>
+
+  <aside>
+    <section id="explore" class="panel controls">
+      <h3>Controles</h3>
+      <label>Familia
+        <select id="family"><option value="sin">seno</option><option value="cos">coseno</option></select>
+      </label>
+      <label>a <output id="ao">2</output><input id="a" type="range" min="-4" max="4" step=".5" value="2"></label>
+      <label>b <output id="bo">1</output><input id="b" type="range" min=".25" max="4" step=".25" value="1"></label>
+      <label>h / π <output id="ho">0</output><input id="h" type="range" min="-2" max="2" step=".25" value="0"></label>
+      <label>d <output id="do">0</output><input id="d" type="range" min="-4" max="4" step=".5" value="0"></label>
+      <label class="check"><input id="showBase" type="checkbox" checked> Mostrar función base</label>
+      <div class="formula"><small>Función actual</small><strong id="formula"></strong></div>
+      <div class="metrics">
+        <div><small>Amplitud</small><strong id="amp"></strong></div>
+        <div><small>Período</small><strong id="per"></strong></div>
+        <div><small>Desplazamiento</small><strong id="shift"></strong></div>
+        <div><small>Línea media</small><strong id="mid"></strong></div>
+      </div>
+    </section>
+
+    <section id="five" class="panel controls hidden">
+      <h3>Construye un ciclo con cinco puntos</h3>
+      <p class="muted">Calcula un ciclo completo y coloca sus cinco puntos de referencia. El laboratorio solo comprobará tu propuesta.</p>
+      <div class="formula"><small>Función del ejercicio</small><strong id="fiveFormula"></strong></div>
+      <div class="buttons">
+        <button id="newFive" class="primary">Nuevo ejercicio</button>
+        <button id="clearFive" class="secondary">Borrar puntos</button>
+      </div>
+      <div class="pointform">
+        <label>x / π<input id="px" type="number" step=".125" placeholder=".25"></label>
+        <label>y<input id="py" type="number" step=".25" placeholder="2"></label>
+        <button id="addPoint" class="primary">Agregar punto</button>
+      </div>
+      <div id="pointList"></div>
+      <button id="checkFive" class="checkbtn">Comprobar cinco puntos</button>
+      <div id="fiveFeedback" class="feedback"></div>
+    </section>
+
+    <section id="identify" class="panel controls hidden">
+      <h3>Identifica una función a partir de su gráfica</h3>
+      <p class="muted">Propón una función seno o coseno equivalente. Se comprueba la curva completa, no una cadena exacta de símbolos.</p>
+      <button id="newGraph" class="primary">Nueva gráfica</button>
+      <div class="guess">
+        <label>Familia<select id="gf"><option value="sin">seno</option><option value="cos">coseno</option></select></label>
+        <label>a<input id="ga" type="number" step=".25" value="1"></label>
+        <label>b<input id="gb" type="number" min=".125" step=".125" value="1"></label>
+        <label>h / π<input id="gh" type="number" step=".125" value="0"></label>
+        <label>d<input id="gd" type="number" step=".25" value="0"></label>
+      </div>
+      <div class="formula"><small>Tu propuesta</small><strong id="guessFormula"></strong></div>
+      <button id="checkGraph" class="checkbtn">Comprobar función</button>
+      <div id="identifyFeedback" class="feedback"></div>
+    </section>
+  </aside>
+</section>
+<footer>Las funciones usan radianes. En h/π y x/π escribe el múltiplo de π, por ejemplo 0.5 para π/2.</footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
